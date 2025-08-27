@@ -170,6 +170,10 @@ var consumeUrl = function (yasqe, args) {
           queryHost = 'GitHub';
           re = new RegExp("https://api.github.com/repos/(.*?)/contents/(.*)");
           break;
+        // Codeberg
+        case 'codeberg.org':
+          queryHost = 'Codeberg';
+          re = new RegExp("https://codeberg.org/api/v1/repos/(.*?)/contents/(.*)");
       }
 
       // set variables for use in HTML page
@@ -187,9 +191,9 @@ var consumeUrl = function (yasqe, args) {
       $.get(args.queryRef, function (data) {
         var query;
 
-        // a repository may return the query directly, or,
-        // in case of Github, as a JSON data structure with encoded content
-        if (queryHost === 'GitHub') {
+        // a repository may return the query directly, or, in case of Github
+        // and Codeberg, as a JSON data structure with base64 encoded content
+        if (queryHost === 'GitHub' || queryHost === 'Codeberg') {
           query = atob(data.content);
         } else {
           query = data;
